@@ -164,7 +164,7 @@ function App() {
   const [isHidingWords, setIsHidingWords] = useState<boolean>(true);
   const [hidingStyle, setHidingStyle] = useState<HidingStyle>(HidingStyle.FirstLetterOfWord);
   const [revealingMethod, setRevealingMethod] = useState<RevealingMethod>(RevealingMethod.Hover);
-  const [revealingStyle, setRevealingStyle] = useState<RevealingStyle>(RevealingStyle.Word);
+  const [revealingStyle, setRevealingStyle] = useState<RevealingStyle>(RevealingStyle.Line);
   const [extraItemsToReveal, setExtraItemsToReveal] = useState<number>(0);
 
   // bootstrap dropdown for hiding style
@@ -232,9 +232,9 @@ function App() {
           <div className="col">
             {isHidingCheckbox}
           </div>
-          <div className="col">
+          {/* <div className="col">
             {hidingStyleDropdown}
-          </div>
+          </div> */}
           <div className="col">
             {revealingMethodDropdown}
           </div>
