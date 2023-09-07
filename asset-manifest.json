@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/poetry-mem/static/css/main.073c9b0a.css",
-    "main.js": "/poetry-mem/static/js/main.f93e387e.js",
+    "main.css": "/poetry-mem/static/css/main.f9b206fe.css",
+    "main.js": "/poetry-mem/static/js/main.68fb3f52.js",
     "static/js/787.1383f2dc.chunk.js": "/poetry-mem/static/js/787.1383f2dc.chunk.js",
-    "static/media/logo.svg": "/poetry-mem/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/poetry-mem/index.html",
-    "main.073c9b0a.css.map": "/poetry-mem/static/css/main.073c9b0a.css.map",
-    "main.f93e387e.js.map": "/poetry-mem/static/js/main.f93e387e.js.map",
+    "main.f9b206fe.css.map": "/poetry-mem/static/css/main.f9b206fe.css.map",
+    "main.68fb3f52.js.map": "/poetry-mem/static/js/main.68fb3f52.js.map",
     "787.1383f2dc.chunk.js.map": "/poetry-mem/static/js/787.1383f2dc.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.f93e387e.js"
+    "static/css/main.f9b206fe.css",
+    "static/js/main.68fb3f52.js"
   ]
 }
