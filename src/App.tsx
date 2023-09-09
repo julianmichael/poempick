@@ -1,8 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { ArrowLeft } from 'react-bootstrap-icons';
+import './App.css';
 
 
 enum HidingStyle {
@@ -28,7 +27,20 @@ interface Selection {
 }
 const NoSelection = { stanza: -Infinity, line: -Infinity, word: -Infinity }
 
-const tokenSplitPattern = "[ ,'-.!?]"
+const tokenSplitPattern = /[a-zA-Z0-9]/
+
+function tokenize(line: string): Array<string> {
+  return Array.from(line).reduce((acc, char) => {
+    if (!char.match(tokenSplitPattern)) {
+      acc.push(char.toString())
+      acc.push("")
+    } else {
+      acc[acc.length - 1] += char
+    }
+    return acc
+  }, [""])
+}
+
 function isWordHideable(word: string): boolean {
   return /^[a-zA-Z0-9]+$/.test(word)
 }
@@ -98,7 +110,7 @@ function Poem(props: {
                 }}
                 onClick={e => {
                   const thisSelection = { stanza: stanzaIndex, line: lineIndex, word: -Infinity }
-                  if (props.revealingStyle == RevealingStyle.Line && props.revealingMethod === RevealingMethod.Click) {
+                  if (props.revealingStyle === RevealingStyle.Line && props.revealingMethod === RevealingMethod.Click) {
                     if (JSON.stringify(selection) === JSON.stringify(thisSelection)) {
                       setSelection(NoSelection);
                     } else {
@@ -106,7 +118,7 @@ function Poem(props: {
                     }
                   }
                 }}
-              >{line.split(/(?=\W+)|(?<=\W+)/g).map((word, rawWordIndex) => {
+              >{tokenize(line).map((word, rawWordIndex) => {
                 const wordIndex = rawWordIndex - numSpacesSoFar
                 if (word === " ") {
                   numSpacesSoFar += 1
@@ -157,13 +169,18 @@ function Poem(props: {
   );
 }
 
+function isTouchDevice() {
+  return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+}
+
 function App() {
   const [title, setTitle] = useState<string>("");
   const [poem, setPoem] = useState<string>("");
   const [poemTmp, setPoemTmp] = useState<string>("");
   const [isHidingWords, setIsHidingWords] = useState<boolean>(true);
   const [hidingStyle, setHidingStyle] = useState<HidingStyle>(HidingStyle.FirstLetterOfWord);
-  const [revealingMethod, setRevealingMethod] = useState<RevealingMethod>(RevealingMethod.Hover);
+  const defaultRevealingMethod = isTouchDevice() ? RevealingMethod.Click : RevealingMethod.Hover;
+  const [revealingMethod, setRevealingMethod] = useState<RevealingMethod>(defaultRevealingMethod);
   const [revealingStyle, setRevealingStyle] = useState<RevealingStyle>(RevealingStyle.Line);
   const [extraItemsToReveal, setExtraItemsToReveal] = useState<number>(0);
 
