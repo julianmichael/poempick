@@ -6,7 +6,7 @@ type Poem = {
 
 const presetPoems: Array<Poem> = [
     {
-        title: "The Lake Isle of Inisfree",
+        title: "The Lake Isle of Innisfree",
         author: "William Butler Yeats",
         poem:
             `I will arise and go now, and go to Innisfree,

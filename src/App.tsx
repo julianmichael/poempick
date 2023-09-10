@@ -268,7 +268,7 @@ function App() {
     return (
       <div className="App container">
         <form>
-          <div className="row mb-2">
+          <div className="row my-2">
             <div className="col">
               Enter a poem.
             </div>
