@@ -2,7 +2,13 @@ import React from 'react';
 import { useState } from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import './App.css';
+import { presetPoems, presetPoemsMap } from './poems';
 
+enum PoemSelection {
+  Custom = 0,
+  Preset,
+  Saved
+}
 
 enum HidingStyle {
   FirstLetterOfWord = 0,
@@ -174,6 +180,9 @@ function isTouchDevice() {
 }
 
 function App() {
+  const [savedPoems, setSavedPoems] = useState<Array<{ title: string, poem: string }>>([]);
+  const [poemSelection, setPoemSelection] = useState<PoemSelection>(PoemSelection.Custom);
+  const [selectedPoemTitle, setSelectedPoemTitle] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [poem, setPoem] = useState<string>("");
   const [poemTmp, setPoemTmp] = useState<string>("");
@@ -228,16 +237,56 @@ function App() {
     </div>
   );
 
+  const customPoemString = "Custom poem"
+
+  function setPresetPoem(title: string) {
+    setSelectedPoemTitle(title);
+    if (title === customPoemString) {
+      setPoemSelection(PoemSelection.Custom);
+      setPoemTmp("");
+      setTitle("");
+    } else {
+      setPoemSelection(PoemSelection.Preset);
+      setPoemTmp(presetPoemsMap[title]);
+      setTitle(title);
+    }
+  }
+  const presetPoemOptions = presetPoems.map(p => {
+    return <option value={p.title}>{p.title}</option>
+  })
+
+  // const savedPoemSelection = poemSelection !== PoemSelection.Saved ? selectedPoemTitle : "Preset poem..."
+  // function setSavedPoem(title: string) {
+  //   setSelectedPoemTitle(title); setPoemSelection(PoemSelection.Preset);
+  // }
+  // const savedPoemOptions = savedPoems.map(p => {
+  //   return <option value={p.title}>{p.title}</option>
+  // })
+
+
   if (poem === "") {
     return (
       <div className="App container">
-        Enter a poem.
         <form>
-          <input id="poem-title" type="text" className="form-control mb-2" placeholder="Title" onChange={(e) => setTitle(e.target.value)} value={title} />
-          <textarea id="poem-field" className="form-control mb-2" placeholder="Poem" rows={10} onChange={(e) => setPoemTmp(e.target.value)}>{poemTmp}</textarea>
+          <div className="row mb-2">
+            <div className="col">
+              Enter a poem.
+            </div>
+            <div className="col">
+              <div className="form-group">
+                {/* <label className="mb-1" htmlFor="revealing-style-dropdown">Revealing style: </label> */}
+                <select className="form-select" value={selectedPoemTitle} onChange={e => setPresetPoem(e.target.value)}>
+                  <option value={customPoemString}>{customPoemString}</option>
+                  {presetPoemOptions}
+                </select>
+              </div>
+            </div>
+          </div>
+          <input id="poem-title" type="text" className="form-control mb-2" placeholder="Title" onChange={(e) => setTitle(e.target.value)} value={title} disabled={poemSelection !== PoemSelection.Custom} />
+          <textarea id="poem-field" className="form-control mb-2" placeholder="Poem" rows={10} value={poemTmp} onChange={(e) => setPoemTmp(e.target.value)} disabled={poemSelection !== PoemSelection.Custom} >{poemTmp}</textarea>
           <button className="btn btn-primary w-100" onClick={() => setPoem(poemTmp)}>Memorize!</button>
-        </form>
-      </div>
+        </form >
+      </div >
     );
   } else {
     return (
