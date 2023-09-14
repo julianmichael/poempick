@@ -23,6 +23,28 @@ I will arise and go now, for always night and day
 I hear lake water lapping with low sounds by the shore;
 While I stand on the roadway, or on the pavements grey,
 I hear it in the deep heart's core.`
+    },
+    {
+        title: "Song: to Celia [“Drink to me only with thine eyes”]",
+        author: "Ben Jonson",
+        poem:
+            `Drink to me only with thine eyes,
+        And I will pledge with mine;
+Or leave a kiss but in the cup,
+        And I'll not look for wine.
+The thirst that from the soul doth rise
+        Doth ask a drink divine;
+But might I of Jove's nectar sup,
+        I would not change for thine.
+
+I sent thee late a rosy wreath,
+        Not so much honouring thee
+As giving it a hope, that there
+        It could not withered be.
+But thou thereon didst only breathe,
+        And sent'st it back to me;
+Since when it grows, and smells, I swear,
+        Not of itself, but thee.`
     }
 ]
 const presetPoemsMap = presetPoems.reduce((acc, poem) => {
