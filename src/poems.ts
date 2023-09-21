@@ -45,6 +45,25 @@ But thou thereon didst only breathe,
         And sent'st it back to me;
 Since when it grows, and smells, I swear,
         Not of itself, but thee.`
+    },
+    {
+        title: "She sweeps with many-colored brooms",
+        author: "Emily Dickinson",
+        poem:
+            `She sweeps with many-colored brooms,
+And leaves the shreds behind;
+Oh, housewife in the evening west,
+Come back, and dust the pond!
+
+You dropped a purple ravelling in,
+You dropped an amber thread;
+And now you've littered all the East
+With duds of emerald!
+
+And still she plies her spotted brooms,
+And still the aprons fly,
+Till brooms fade softly into stars —
+And then I come away.`
     }
 ]
 const presetPoemsMap = presetPoems.reduce((acc, poem) => {
