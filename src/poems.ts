@@ -64,7 +64,105 @@ And still she plies her spotted brooms,
 And still the aprons fly,
 Till brooms fade softly into stars —
 And then I come away.`
-    }
+    },
+    {
+        title: "For One Who Is Exhausted",
+        author: "John O'Donohue",
+        poem:
+            `When the rhythm of the heart becomes hectic,
+Time takes on the strain until it breaks;
+Then all the unattended stress falls in
+On the mind like an endless, increasing weight.
+
+The light in the mind becomes dim.
+Things you could take in your stride before
+Now become laborsome events of will.
+
+Weariness invades your spirit.
+Gravity begins falling inside you,
+Dragging down every bone.
+
+The tide you never valued has gone out.
+And you are marooned on unsure ground.
+Something within you has closed down;
+And you cannot push yourself back to life.
+
+You have been forced to enter empty time.
+The desire that drove you has relinquished.
+There is nothing else to do now but rest
+And patiently learn to receive the self
+You have forsaken in the race of days.
+
+At first your thinking will darken
+And sadness take over like listless weather.
+The flow of unwept tears will frighten you.
+
+You have traveled too fast over false ground;
+Now your soul has come to take you back.
+
+Take refuge in your senses, open up
+To all the small miracles you rushed through.
+
+Become inclined to watch the way of rain
+When it falls slow and free.
+
+Imitate the habit of twilight,
+Taking time to open the well of color
+That fostered the brightness of day.
+
+Draw alongside the silence of stone
+Until its calmness can claim you.
+Be excessively gentle with yourself.
+
+Stay clear of those vexed in spirit.
+Learn to linger around someone of ease
+Who feels they have all the time in the world.
+
+Gradually, you will return to yourself,
+Having learned a new respect for your heart
+And the joy that dwells far within slow time.`
+    },
+    {
+        title: "Beannacht",
+        author: "John O'Donohue",
+        poem:
+            `On the day when
+the weight deadens
+on your shoulders
+and you stumble,
+may the clay dance
+to balance you.
+
+And when your eyes
+freeze behind
+the grey window
+and the ghost of loss
+gets into you,
+may a flock of colours,
+indigo, red, green
+and azure blue,
+come to awaken in you
+a meadow of delight.
+
+When the canvas frays
+in the currach of thought
+and a stain of ocean
+blackens beneath you,
+may there come across the waters
+a path of yellow moonlight
+to bring you safely home.
+
+May the nourishment of the earth be yours,
+may the clarity of light be yours,
+may the fluency of the ocean be yours,
+may the protection of the ancestors be yours.
+
+And so may a slow
+wind work these words
+of love around you,
+an invisible cloak
+to mind your life.`
+    },
 ]
 const presetPoemsMap = presetPoems.reduce((acc, poem) => {
     acc[poem.title] = poem.poem
