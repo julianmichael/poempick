@@ -171,16 +171,34 @@ to mind your life.`
 By that sweet ornament which truth doth give!
 The rose looks fair, but fairer we it deem
 For that sweet odour which doth in it live.
-The canker-blooms have full as deep a dye
+The canker blooms have full as deep a dye
 As the perfumèd tincture of the roses,
-Hand on such thorns, and play as wantonly
+Hang on such thorns, and play as wantonly
 When summer's breath their maskèd buds discloses;
 But, for their virtue only is their show,
 They live unwoo'd and unrespected fade,
 Die to themselves. Sweet roses do not so;
 Of their sweet deaths are sweetest odours made.
  And so of you, beauteous and lovely youth,
- When that shall fade, my verse distils your truth.`
+ When that shall fade, by verse distils your truth.`
+    },
+    {
+        title: "Song of the Rose",
+        author: "Sappho (via Achilles Tatius, Elizabeth Barrett Browning",
+        poem:
+            `If Zeus chose us a King of the flowers in his mirth,
+He would call to the rose and would royally crown it,
+For the rose, ho, the rose! is the grace of the earth,
+Is the light of the plants that are growing upon it.
+For the rose, ho, the rose! is the eye of the flowers,
+Is the blush of the meadows that feel themselves fair,--
+Is the lightning of beauty, that strikes through the bowers
+On pale lovers who sit in the glow unaware.
+Ho, the rose breathes of love! ho, the rose, lifts the cup
+To the red lips of Cypris invoked for a guest!
+Ho, the rose, having curled its sweet leaves for the world,
+Takes delight in the motion its petals keep up,
+As they laugh to the Wind as it laughs from the west.`
     }
 ]
 const presetPoemsMap = presetPoems.reduce((acc, poem) => {
