@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import './App.css';
 import { presetPoems, presetPoemsMap, Poem } from './poems';
-import { Route, Switch, useLocation } from 'wouter';
+import { Route, Router, Switch } from 'wouter';
+import { useHashLocation } from 'wouter/use-hash-location';
 
 enum HidingStyle {
   FirstLetterOfWord = 0,
@@ -185,7 +186,7 @@ function isTouchDevice() {
 }
 
 function App() {
-  const [location, setLocation] = useLocation();
+  const [location, setLocation] = useHashLocation();
   // const [savedPoems, setSavedPoems] = useState<Array<{ title: string, poem: string }>>([]);
 
   const presetPoemOptions = presetPoems.map(p => {
@@ -293,65 +294,66 @@ function App() {
 
 
   return (
-    <Switch>
-      <Route path="/">
-        <div className="App container">
-          <form>
-            <div className="row my-2">
-              <div className="col">
-                Enter a poem.
-              </div>
-              <div className="col">
-                <div className="form-group">
-                  {/* <label className="mb-1" htmlFor="revealing-style-dropdown">Revealing style: </label> */}
-                  <select className="form-select" value={presetPoem?.key ?? "custom"} onChange={e => setPresetPoemKey(e.target.value)}>
-                    <option value="custom">{customPoemString}</option>
-                    {presetPoemOptions}
-                  </select>
+    <Router hook={useHashLocation}>
+      <Switch>
+        <Route path="/">
+          <div className="App container">
+            <form>
+              <div className="row my-2">
+                <div className="col">
+                  Enter a poem.
+                </div>
+                <div className="col">
+                  <div className="form-group">
+                    {/* <label className="mb-1" htmlFor="revealing-style-dropdown">Revealing style: </label> */}
+                    <select className="form-select" value={presetPoem?.key ?? "custom"} onChange={e => setPresetPoemKey(e.target.value)}>
+                      <option value="custom">{customPoemString}</option>
+                      {presetPoemOptions}
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <input id="poem-title" type="text" className="form-control mb-2" placeholder="Title" value={poem.title} onChange={(e) => setCustomTitle(e.target.value)} disabled={presetPoem !== null} />
-            <textarea id="poem-field" className="form-control mb-2" placeholder="Poem" rows={10} value={poem.poem} onChange={(e) => setCustomPoemText(e.target.value)} disabled={presetPoem !== null} >{poem.poem}</textarea>
-            <button className="btn btn-primary w-100" onClick={() => goMemorize()}>Memorize!</button>
-          </form >
-        </div >
-      </Route>
-      <Route path="/:poemKey">{params =>
-        <div className="App container">
-          <div className="row text-start mt-1 mb-2">
-            <div className="col">
-              <button className="btn btn-outline-secondary" onClick={() => setLocation("/")}><ArrowLeft /> Change poem</button>
-            </div>
-            <div className="col">
-              {isHidingCheckbox}
-            </div>
-            {/* <div className="col">
+              <input id="poem-title" type="text" className="form-control mb-2" placeholder="Title" value={poem.title} onChange={(e) => setCustomTitle(e.target.value)} disabled={presetPoem !== null} />
+              <textarea id="poem-field" className="form-control mb-2" placeholder="Poem" rows={10} value={poem.poem} onChange={(e) => setCustomPoemText(e.target.value)} disabled={presetPoem !== null} >{poem.poem}</textarea>
+              <button className="btn btn-primary w-100" onClick={() => goMemorize()}>Memorize!</button>
+            </form >
+          </div >
+        </Route>
+        <Route path="/:poemKey">{params =>
+          <div className="App container">
+            <div className="row text-start mt-1 mb-2">
+              <div className="col">
+                <button className="btn btn-outline-secondary" onClick={() => setLocation("/")}><ArrowLeft /> Change poem</button>
+              </div>
+              <div className="col">
+                {isHidingCheckbox}
+              </div>
+              {/* <div className="col">
             {hidingStyleDropdown}
           </div> */}
-            <div className="col">
-              {revealingMethodDropdown}
+              <div className="col">
+                {revealingMethodDropdown}
+              </div>
+              <div className="col">
+                {revealingStyleDropdown}
+              </div>
+              <div className="col">
+                {extraItemsToRevealNumberField}
+              </div>
             </div>
-            <div className="col">
-              {revealingStyleDropdown}
-            </div>
-            <div className="col">
-              {extraItemsToRevealNumberField}
-            </div>
+            <PoemDisplay
+              poem={presetPoemsMap[params.poemKey] ?? poem}
+              isHiding={isHidingWords}
+              hidingStyle={hidingStyle}
+              revealingStyle={revealingStyle}
+              revealingMethod={revealingMethod}
+              extraItemsToReveal={extraItemsToReveal}
+            />
           </div>
-          <PoemDisplay
-            poem={presetPoemsMap[params.poemKey] ?? poem}
-            isHiding={isHidingWords}
-            hidingStyle={hidingStyle}
-            revealingStyle={revealingStyle}
-            revealingMethod={revealingMethod}
-            extraItemsToReveal={extraItemsToReveal}
-          />
-
-        </div>
-      }
-      </Route>
-    </Switch>
+        }
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 export default App;
