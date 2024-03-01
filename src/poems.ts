@@ -1,4 +1,5 @@
-type Poem = {
+export interface Poem {
+    key: string
     title: string
     author: string
     poem: string
@@ -6,6 +7,7 @@ type Poem = {
 
 const presetPoems: Array<Poem> = [
     {
+        key: "the-lake-isle-of-inisfree",
         title: "The Lake Isle of Innisfree",
         author: "William Butler Yeats",
         poem:
@@ -25,6 +27,7 @@ While I stand on the roadway, or on the pavements grey,
 I hear it in the deep heart's core.`
     },
     {
+        key: "song-to-celia",
         title: "Song: to Celia [“Drink to me only with thine eyes”]",
         author: "Ben Jonson",
         poem:
@@ -47,6 +50,7 @@ Since when it grows, and smells, I swear,
         Not of itself, but thee.`
     },
     {
+        key: "she-sweeps-with-many-colored-brooms",
         title: "She sweeps with many-colored brooms",
         author: "Emily Dickinson",
         poem:
@@ -66,6 +70,7 @@ Till brooms fade softly into stars —
 And then I come away.`
     },
     {
+        key: "for-one-who-is-exhausted",
         title: "For One Who Is Exhausted",
         author: "John O'Donohue",
         poem:
@@ -123,6 +128,7 @@ Having learned a new respect for your heart
 And the joy that dwells far within slow time.`
     },
     {
+        key: "beannacht",
         title: "Beannacht",
         author: "John O'Donohue",
         poem:
@@ -164,6 +170,7 @@ an invisible cloak
 to mind your life.`
     },
     {
+        key: "sonnet-54",
         title: "Sonnet 54",
         author: "William Shakespeare",
         poem:
@@ -183,6 +190,7 @@ Of their sweet deaths are sweetest odours made.
  When that shall fade, by verse distils your truth.`
     },
     {
+        key: "song-of-the-rose",
         title: "Song of the Rose",
         author: "Sappho (via Achilles Tatius, Elizabeth Barrett Browning",
         poem:
@@ -202,8 +210,8 @@ As they laugh to the Wind as it laughs from the west.`
     }
 ]
 const presetPoemsMap = presetPoems.reduce((acc, poem) => {
-    acc[poem.title] = poem.poem
+    acc[poem.key] = poem
     return acc
-}, {} as { [key: string]: string })
+}, {} as { [key: string]: Poem })
 
 export { presetPoems, presetPoemsMap }

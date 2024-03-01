@@ -2,13 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import './App.css';
-import { presetPoems, presetPoemsMap } from './poems';
-
-enum PoemSelection {
-  Custom = 0,
-  Preset,
-  Saved
-}
+import { presetPoems, presetPoemsMap, Poem } from './poems';
+import { Route, Switch, useLocation } from 'wouter';
 
 enum HidingStyle {
   FirstLetterOfWord = 0,
@@ -51,41 +46,51 @@ function isWordHideable(word: string): boolean {
   return /^[a-zA-Z0-9]+$/.test(word)
 }
 
-function Poem(props: {
-  poem: string,
+interface PoemDisplayProps {
+  poem: Poem,
   isHiding: boolean,
   hidingStyle: HidingStyle,
   revealingStyle: RevealingStyle,
   revealingMethod: RevealingMethod,
-  extraItemsToReveal: number
-}) {
+  extraItemsToReveal: number,
+}
+
+function PoemDisplay({
+  poem,
+  isHiding,
+  hidingStyle,
+  revealingStyle,
+  revealingMethod,
+  extraItemsToReveal
+}: PoemDisplayProps) {
   const [selection, setSelection] = useState<Selection>(NoSelection);
 
-  return (
-    // align text left via bootstrap class on this div
+  // align text left via bootstrap class on this div
+  return (<>
+    <h1>{poem.title}</h1>
     <div className="poem text-start">
-      {props.poem.split("\n\n").map((stanza, stanzaIndex) => {
-        const stanzaIsHidden = props.isHiding
-          && props.revealingStyle === RevealingStyle.Stanza
-          && props.isHiding
+      {poem.poem.split("\n\n").map((stanza, stanzaIndex) => {
+        const stanzaIsHidden = isHiding
+          && revealingStyle === RevealingStyle.Stanza
+          && isHiding
           && !(stanzaIndex >= selection.stanza
-            && stanzaIndex <= selection.stanza + props.extraItemsToReveal);
+            && stanzaIndex <= selection.stanza + extraItemsToReveal);
 
         return (
           <p
             onMouseEnter={e => {
-              if (props.revealingStyle === RevealingStyle.Stanza && props.revealingMethod === RevealingMethod.Hover) {
+              if (revealingStyle === RevealingStyle.Stanza && revealingMethod === RevealingMethod.Hover) {
                 setSelection({ stanza: stanzaIndex, line: -Infinity, word: -Infinity })
               }
             }}
             onMouseLeave={e => {
-              if (props.revealingStyle === RevealingStyle.Stanza && props.revealingMethod === RevealingMethod.Hover) {
+              if (revealingStyle === RevealingStyle.Stanza && revealingMethod === RevealingMethod.Hover) {
                 setSelection(NoSelection)
               }
             }}
             onClick={e => {
               const thisSelection = { stanza: stanzaIndex, line: -Infinity, word: -Infinity }
-              if (props.revealingStyle === RevealingStyle.Stanza && props.revealingMethod === RevealingMethod.Click) {
+              if (revealingStyle === RevealingStyle.Stanza && revealingMethod === RevealingMethod.Click) {
                 if (JSON.stringify(selection) === JSON.stringify(thisSelection)) {
                   setSelection(NoSelection)
                 } else {
@@ -94,29 +99,29 @@ function Poem(props: {
               }
             }}
           >{stanza.split("\n").map((line, lineIndex) => {
-            const lineIsHidden = props.isHiding
-              && props.revealingStyle === RevealingStyle.Line
-              && props.isHiding
+            const lineIsHidden = isHiding
+              && revealingStyle === RevealingStyle.Line
+              && isHiding
               && !(selection.stanza === stanzaIndex
                 && lineIndex >= selection.line
-                && lineIndex <= selection.line + props.extraItemsToReveal);
+                && lineIndex <= selection.line + extraItemsToReveal);
 
             var numSpacesSoFar = 0
             return (
               <p className="mb-0"
                 onMouseEnter={e => {
-                  if (props.revealingStyle === RevealingStyle.Line && props.revealingMethod === RevealingMethod.Hover) {
+                  if (revealingStyle === RevealingStyle.Line && revealingMethod === RevealingMethod.Hover) {
                     setSelection({ stanza: stanzaIndex, line: lineIndex, word: -Infinity })
                   }
                 }}
                 onMouseLeave={e => {
-                  if (props.revealingStyle === RevealingStyle.Line && props.revealingMethod === RevealingMethod.Hover) {
+                  if (revealingStyle === RevealingStyle.Line && revealingMethod === RevealingMethod.Hover) {
                     setSelection({ stanza: stanzaIndex, line: -Infinity, word: -Infinity })
                   }
                 }}
                 onClick={e => {
                   const thisSelection = { stanza: stanzaIndex, line: lineIndex, word: -Infinity }
-                  if (props.revealingStyle === RevealingStyle.Line && props.revealingMethod === RevealingMethod.Click) {
+                  if (revealingStyle === RevealingStyle.Line && revealingMethod === RevealingMethod.Click) {
                     if (JSON.stringify(selection) === JSON.stringify(thisSelection)) {
                       setSelection(NoSelection);
                     } else {
@@ -129,33 +134,33 @@ function Poem(props: {
                 if (word === " ") {
                   numSpacesSoFar += 1
                 }
-                const wordsAreHidden = props.revealingStyle === RevealingStyle.Word && props.isHiding
+                const wordsAreHidden = revealingStyle === RevealingStyle.Word && isHiding
                 const wordIsRevealed = selection.stanza === stanzaIndex
                   && selection.line === lineIndex
                   && wordIndex >= selection.word
-                  && wordIndex <= selection.word + props.extraItemsToReveal;
+                  && wordIndex <= selection.word + extraItemsToReveal;
                 const wordIsHidden = stanzaIsHidden
                   || lineIsHidden
                   || (isWordHideable(word) && wordsAreHidden && !wordIsRevealed);
                 var hiddenWord = word;
-                if (props.hidingStyle === HidingStyle.FirstLetterOfWord) {
+                if (hidingStyle === HidingStyle.FirstLetterOfWord) {
                   hiddenWord = word.charAt(0).toString()
                 }
                 return (
                   <span
                     onMouseEnter={e => {
-                      if (props.revealingStyle === RevealingStyle.Word && props.revealingMethod === RevealingMethod.Hover) {
+                      if (revealingStyle === RevealingStyle.Word && revealingMethod === RevealingMethod.Hover) {
                         setSelection({ stanza: stanzaIndex, line: lineIndex, word: wordIndex })
                       }
                     }}
                     onMouseLeave={e => {
-                      if (props.revealingStyle === RevealingStyle.Word && props.revealingMethod === RevealingMethod.Hover) {
+                      if (revealingStyle === RevealingStyle.Word && revealingMethod === RevealingMethod.Hover) {
                         setSelection(NoSelection)
                       }
                     }}
                     onClick={e => {
                       const thisSelection = { stanza: stanzaIndex, line: lineIndex, word: wordIndex }
-                      if (props.revealingStyle === RevealingStyle.Word && props.revealingMethod === RevealingMethod.Click) {
+                      if (revealingStyle === RevealingStyle.Word && revealingMethod === RevealingMethod.Click) {
                         if (JSON.stringify(selection) === JSON.stringify(thisSelection)) {
                           setSelection(NoSelection);
                         } else {
@@ -171,8 +176,8 @@ function Poem(props: {
           })}</p>
         )
       })}
-    </div >
-  );
+    </div>
+  </>);
 }
 
 function isTouchDevice() {
@@ -180,18 +185,34 @@ function isTouchDevice() {
 }
 
 function App() {
-  const [savedPoems, setSavedPoems] = useState<Array<{ title: string, poem: string }>>([]);
-  const [poemSelection, setPoemSelection] = useState<PoemSelection>(PoemSelection.Custom);
-  const [selectedPoemTitle, setSelectedPoemTitle] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [poem, setPoem] = useState<string>("");
-  const [poemTmp, setPoemTmp] = useState<string>("");
+  const [location, setLocation] = useLocation();
+  // const [savedPoems, setSavedPoems] = useState<Array<{ title: string, poem: string }>>([]);
+
+  const presetPoemOptions = presetPoems.map(p => {
+    return <option value={p.key}>{p.title}</option>
+  })
+  const [presetPoemKey, setPresetPoemKey] = useState<string>("custom");
+  const presetPoem = presetPoemKey === "custom" ? null : presetPoemsMap[presetPoemKey];
+
+  // const [poemSelection, setPoemSelection] = useState<PoemSelection>(PoemSelection.Custom);
+  // const [poem, setPoem] = useState<Poem | null>(null);
+  // const [selectedPoemTitle, setSelectedPoemTitle] = useState<string>("");
+  const [customTitle, setCustomTitle] = useState<string>("");
+  const [customPoemText, setCustomPoemText] = useState<string>("");
+
   const [isHidingWords, setIsHidingWords] = useState<boolean>(true);
   const [hidingStyle, setHidingStyle] = useState<HidingStyle>(HidingStyle.FirstLetterOfWord);
   const defaultRevealingMethod = isTouchDevice() ? RevealingMethod.Click : RevealingMethod.Hover;
   const [revealingMethod, setRevealingMethod] = useState<RevealingMethod>(defaultRevealingMethod);
   const [revealingStyle, setRevealingStyle] = useState<RevealingStyle>(RevealingStyle.Line);
   const [extraItemsToReveal, setExtraItemsToReveal] = useState<number>(0);
+
+  const poem = presetPoem ?? {
+    key: "custom",
+    author: "custom",
+    title: customTitle,
+    poem: customPoemText
+  }
 
   // bootstrap dropdown for hiding style
   const isHidingCheckbox = (
@@ -202,15 +223,15 @@ function App() {
       </label>
     </div>
   )
-  const hidingStyleDropdown = (
-    <div className="form-group">
-      <label className="mb-1" htmlFor="hiding-style-dropdown">Hiding style: </label>
-      <select className="form-select" value={hidingStyle} onChange={e => setHidingStyle(parseInt(e.target.value))}>
-        <option value={HidingStyle.FirstLetterOfWord}>First letter of word</option>
-        {/* <option value={HidingStyle.RandomLetters}>Random letters</option> */}
-      </select>
-    </div>
-  );
+  // const hidingStyleDropdown = (
+  //   <div className="form-group">
+  //     <label className="mb-1" htmlFor="hiding-style-dropdown">Hiding style: </label>
+  //     <select className="form-select" value={hidingStyle} onChange={e => setHidingStyle(parseInt(e.target.value))}>
+  //       <option value={HidingStyle.FirstLetterOfWord}>First letter of word</option>
+  //       {/* <option value={HidingStyle.RandomLetters}>Random letters</option> */}
+  //     </select>
+  //   </div>
+  // );
   const revealingMethodDropdown = (
     <div className="form-group">
       <label className="mb-1" htmlFor="revealing-method-dropdown">Revealing method: </label>
@@ -239,21 +260,20 @@ function App() {
 
   const customPoemString = "Custom poem"
 
-  function setPresetPoem(title: string) {
-    setSelectedPoemTitle(title);
-    if (title === customPoemString) {
-      setPoemSelection(PoemSelection.Custom);
-      setPoemTmp("");
-      setTitle("");
-    } else {
-      setPoemSelection(PoemSelection.Preset);
-      setPoemTmp(presetPoemsMap[title]);
-      setTitle(title);
-    }
-  }
-  const presetPoemOptions = presetPoems.map(p => {
-    return <option value={p.title}>{p.title}</option>
-  })
+  // function setPresetPoem(key: string | null) {
+  //   if (key === null) {
+  //     setPoemSelection(PoemSelection.Custom);
+  //     setSelectedPoemTitle("");
+  //     setTitle("");
+  //     setPoemTextTmp("");
+  //   } else {
+  //     const thisPoem = presetPoemsMap[key];
+  //     setPoemSelection(PoemSelection.Preset);
+  //     setSelectedPoemTitle(thisPoem.title);
+  //     setTitle(thisPoem.title);
+  //     setPoemTextTmp(thisPoem.poem);
+  //   }
+  // }
 
   // const savedPoemSelection = poemSelection !== PoemSelection.Saved ? selectedPoemTitle : "Preset poem..."
   // function setSavedPoem(title: string) {
@@ -263,66 +283,75 @@ function App() {
   //   return <option value={p.title}>{p.title}</option>
   // })
 
+  function goMemorize() {
+    if (presetPoem !== null) {
+      setLocation(`/${presetPoem.key}`)
+    } else {
+      setLocation(`/custom`)
+    }
+  }
 
-  if (poem === "") {
-    return (
-      <div className="App container">
-        <form>
-          <div className="row my-2">
-            <div className="col">
-              Enter a poem.
-            </div>
-            <div className="col">
-              <div className="form-group">
-                {/* <label className="mb-1" htmlFor="revealing-style-dropdown">Revealing style: </label> */}
-                <select className="form-select" value={selectedPoemTitle} onChange={e => setPresetPoem(e.target.value)}>
-                  <option value={customPoemString}>{customPoemString}</option>
-                  {presetPoemOptions}
-                </select>
+
+  return (
+    <Switch>
+      <Route path="/">
+        <div className="App container">
+          <form>
+            <div className="row my-2">
+              <div className="col">
+                Enter a poem.
+              </div>
+              <div className="col">
+                <div className="form-group">
+                  {/* <label className="mb-1" htmlFor="revealing-style-dropdown">Revealing style: </label> */}
+                  <select className="form-select" value={presetPoem?.key ?? "custom"} onChange={e => setPresetPoemKey(e.target.value)}>
+                    <option value="custom">{customPoemString}</option>
+                    {presetPoemOptions}
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <input id="poem-title" type="text" className="form-control mb-2" placeholder="Title" onChange={(e) => setTitle(e.target.value)} value={title} disabled={poemSelection !== PoemSelection.Custom} />
-          <textarea id="poem-field" className="form-control mb-2" placeholder="Poem" rows={10} value={poemTmp} onChange={(e) => setPoemTmp(e.target.value)} disabled={poemSelection !== PoemSelection.Custom} >{poemTmp}</textarea>
-          <button className="btn btn-primary w-100" onClick={() => setPoem(poemTmp)}>Memorize!</button>
-        </form >
-      </div >
-    );
-  } else {
-    return (
-      <div className="App container">
-        <div className="row text-start mt-1 mb-2">
-          <div className="col">
-            <button className="btn btn-outline-secondary" onClick={() => setPoem("")}><ArrowLeft /> Change poem</button>
-          </div>
-          <div className="col">
-            {isHidingCheckbox}
-          </div>
-          {/* <div className="col">
+            <input id="poem-title" type="text" className="form-control mb-2" placeholder="Title" value={poem.title} onChange={(e) => setCustomTitle(e.target.value)} disabled={presetPoem !== null} />
+            <textarea id="poem-field" className="form-control mb-2" placeholder="Poem" rows={10} value={poem.poem} onChange={(e) => setCustomPoemText(e.target.value)} disabled={presetPoem !== null} >{poem.poem}</textarea>
+            <button className="btn btn-primary w-100" onClick={() => goMemorize()}>Memorize!</button>
+          </form >
+        </div >
+      </Route>
+      <Route path="/:poemKey">{params =>
+        <div className="App container">
+          <div className="row text-start mt-1 mb-2">
+            <div className="col">
+              <button className="btn btn-outline-secondary" onClick={() => setLocation("/")}><ArrowLeft /> Change poem</button>
+            </div>
+            <div className="col">
+              {isHidingCheckbox}
+            </div>
+            {/* <div className="col">
             {hidingStyleDropdown}
           </div> */}
-          <div className="col">
-            {revealingMethodDropdown}
+            <div className="col">
+              {revealingMethodDropdown}
+            </div>
+            <div className="col">
+              {revealingStyleDropdown}
+            </div>
+            <div className="col">
+              {extraItemsToRevealNumberField}
+            </div>
           </div>
-          <div className="col">
-            {revealingStyleDropdown}
-          </div>
-          <div className="col">
-            {extraItemsToRevealNumberField}
-          </div>
-        </div>
-        <h1>{title}</h1>
-        <Poem
-          poem={poem}
-          isHiding={isHidingWords}
-          hidingStyle={hidingStyle}
-          revealingStyle={revealingStyle}
-          revealingMethod={revealingMethod}
-          extraItemsToReveal={extraItemsToReveal}
-        />
+          <PoemDisplay
+            poem={presetPoemsMap[params.poemKey] ?? poem}
+            isHiding={isHidingWords}
+            hidingStyle={hidingStyle}
+            revealingStyle={revealingStyle}
+            revealingMethod={revealingMethod}
+            extraItemsToReveal={extraItemsToReveal}
+          />
 
-      </div>
-    );
-  }
+        </div>
+      }
+      </Route>
+    </Switch>
+  );
 }
 export default App;
