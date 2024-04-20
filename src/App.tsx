@@ -231,8 +231,6 @@ function App() {
   const [extraItemsToReveal, setExtraItemsToReveal] = useState<number>(0);
 
   const poem = presetPoem ?? {
-    key: "custom",
-    author: "custom",
     title: customTitle,
     poem: customPoemText
   }
@@ -310,9 +308,10 @@ function App() {
     if (presetPoem !== null) {
       setLocation(`/${presetPoem.key}`)
     } else {
-      setLocation(`/custom`)
+      setLocation(`/custom/${encodeURIComponent(JSON.stringify(poem))}`)
     }
   }
+
 
 
   return (
@@ -340,6 +339,39 @@ function App() {
               <button className="btn btn-primary w-100" onClick={() => goMemorize()}>Memorize!</button>
             </form >
           </div >
+        </Route>
+        <Route path="/custom/:poem">{params =>
+          <div className="App container">
+            <div className="row text-start mt-1 mb-2">
+              <div className="col">
+                <button className="btn btn-outline-secondary" onClick={() => setLocation("/")}><ArrowLeft /> Change poem</button>
+              </div>
+              <div className="col">
+                {isHidingCheckbox}
+              </div>
+              {/* <div className="col">
+            {hidingStyleDropdown}
+          </div> */}
+              <div className="col">
+                {revealingMethodDropdown}
+              </div>
+              <div className="col">
+                {revealingStyleDropdown}
+              </div>
+              <div className="col">
+                {extraItemsToRevealNumberField}
+              </div>
+            </div>
+            <PoemDisplay
+              poem={JSON.parse(decodeURIComponent(params.poem))}
+              isHiding={isHidingWords}
+              hidingStyle={hidingStyle}
+              revealingStyle={revealingStyle}
+              revealingMethod={revealingMethod}
+              extraItemsToReveal={extraItemsToReveal}
+            />
+          </div>
+        }
         </Route>
         <Route path="/:poemKey">{params =>
           <div className="App container">
