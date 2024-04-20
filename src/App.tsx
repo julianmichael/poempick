@@ -98,7 +98,8 @@ function PoemDisplay({
             && stanzaIndex <= selection.stanza + extraItemsToReveal);
 
         return (
-          <p
+          <div
+            key={`stanza-${stanzaIndex}`}
             onMouseEnter={e => {
               if (revealingStyle === RevealingStyle.Stanza && revealingMethod === RevealingMethod.Hover) {
                 setSelection({ stanza: stanzaIndex, line: -Infinity, word: -Infinity })
@@ -129,7 +130,7 @@ function PoemDisplay({
 
             var numSpacesSoFar = 0
             return (
-              <p className="mb-0"
+              <p key={`stanza-${stanzaIndex} line-${lineIndex}`} className="mb-0"
                 onMouseEnter={e => {
                   if (revealingStyle === RevealingStyle.Line && revealingMethod === RevealingMethod.Hover) {
                     setSelection({ stanza: stanzaIndex, line: lineIndex, word: -Infinity })
@@ -169,6 +170,7 @@ function PoemDisplay({
                 }
                 return (
                   <span
+                    key={`stanza-${stanzaIndex} line-${lineIndex} word-${rawWordIndex}`}
                     onMouseEnter={e => {
                       if (revealingStyle === RevealingStyle.Word && revealingMethod === RevealingMethod.Hover) {
                         setSelection({ stanza: stanzaIndex, line: lineIndex, word: wordIndex })
@@ -194,7 +196,7 @@ function PoemDisplay({
               }
               )}</p>
             )
-          })}</p>
+          })}</div>
         )
       })}
     </div>
@@ -210,7 +212,7 @@ function App() {
   // const [savedPoems, setSavedPoems] = useState<Array<{ title: string, poem: string }>>([]);
 
   const presetPoemOptions = presetPoems.map(p => {
-    return <option value={p.key}>{p.title}</option>
+    return <option key={p.key} value={p.key}>{p.title}</option>
   })
   const [presetPoemKey, setPresetPoemKey] = useState<string>("custom");
   const presetPoem = presetPoemKey === "custom" ? null : presetPoemsMap[presetPoemKey];
@@ -256,7 +258,7 @@ function App() {
   const revealingMethodDropdown = (
     <div className="form-group">
       <label className="mb-1" htmlFor="revealing-method-dropdown">Revealing method: </label>
-      <select className="form-select" value={revealingMethod} onChange={e => setRevealingMethod(parseInt(e.target.value))}>
+      <select className="form-select" id="revealing-method-dropdown" value={revealingMethod} onChange={e => setRevealingMethod(parseInt(e.target.value))}>
         <option value={RevealingMethod.Hover}>Hover</option>
         <option value={RevealingMethod.Click}>Click</option>
       </select>
@@ -265,7 +267,7 @@ function App() {
   const revealingStyleDropdown = (
     <div className="form-group">
       <label className="mb-1" htmlFor="revealing-style-dropdown">Revealing style: </label>
-      <select className="form-select" value={revealingStyle} onChange={e => setRevealingStyle(parseInt(e.target.value))}>
+      <select className="form-select" id="revealing-style-dropdown" value={revealingStyle} onChange={e => setRevealingStyle(parseInt(e.target.value))}>
         <option value={RevealingStyle.Word}>Word</option>
         <option value={RevealingStyle.Line}>Line</option>
         <option value={RevealingStyle.Stanza}>Stanza</option>
