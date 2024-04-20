@@ -2,9 +2,24 @@ import React from 'react';
 import { useState } from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import './App.css';
-import { presetPoems, presetPoemsMap, Poem } from './poems';
+// import { presetPoems, presetPoemsMap, Poem } from './poems-old';
+import { presetPoems } from './poems';
 import { Route, Router, Switch } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
+
+export interface Poem {
+  key: string
+  title: string
+  author: string
+  poem: string
+}
+
+const presetPoemsMap = presetPoems.reduce((acc, poem) => {
+  acc[poem.key] = poem
+  return acc
+}, {} as { [key: string]: Poem })
+
+export { presetPoems, presetPoemsMap }
 
 enum HidingStyle {
   FirstLetterOfWord = 0,
@@ -45,6 +60,11 @@ function tokenize(line: string): Array<string> {
 
 function isWordHideable(word: string): boolean {
   return /^[a-zA-Z0-9]+$/.test(word)
+}
+
+function escapeWord(word: string): string {
+  if (word === " ") return "\u00A0";
+  else return word;
 }
 
 interface PoemDisplayProps {
@@ -169,7 +189,7 @@ function PoemDisplay({
                         }
                       }
                     }}
-                  >{wordIsHidden ? hiddenWord : word}</span>
+                  >{escapeWord(wordIsHidden ? hiddenWord : word)}</span>
                 )
               }
               )}</p>

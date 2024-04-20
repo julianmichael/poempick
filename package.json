@@ -21,11 +21,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run gen-poems && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "echo poempick.net > ./build/CNAME && gh-pages -d build"
+    "deploy": "echo poempick.net > ./build/CNAME && gh-pages -d build",
+    "gen-poems": "echo 'export const presetPoems = ' > src/poems.ts && js-yaml poems.yml >> src/poems.ts",
+    "autogen-poems": "watch 'npm run gen-poems' poems.yml"
   },
   "eslintConfig": {
     "extends": [
@@ -46,7 +48,9 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.0.0"
+    "gh-pages": "^6.0.0",
+    "js-yaml": "^4.1.0",
+    "watch": "^1.0.2"
   },
   "homepage": "https://poempick.net"
 }
