@@ -100,6 +100,7 @@ function PoemDisplay({
         return (
           <div
             key={`stanza-${stanzaIndex}`}
+            className="mb-2"
             onMouseEnter={e => {
               if (revealingStyle === RevealingStyle.Stanza && revealingMethod === RevealingMethod.Hover) {
                 setSelection({ stanza: stanzaIndex, line: -Infinity, word: -Infinity })
