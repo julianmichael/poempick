@@ -53,5 +53,11 @@ export const presetPoems =
     "title": "Abou Ben Adhem",
     "author": "Leigh Hunt",
     "poem": "Abou Ben Adhem (may his tribe increase!)\nAwoke one night from a deep dream of peace,\nAnd saw, within the moonlight in his room,\nMaking it rich, and like a lily in bloom,\nAn angel writing in a book of gold:—\nExceeding peace had made Ben Adhem bold,\nAnd to the presence in the room he said,\n\"What writest thou?\"—The vision raised its head,\nAnd with a look made of all sweet accord,\nAnswered, \"The names of those who love the Lord.\"\n\"And is mine one?\" said Abou. \"Nay, not so,\"\nReplied the angel. Abou spoke more low,\nBut cheerly still; and said, \"I pray thee, then,\nWrite me as one that loves his fellow men.\"\n\nThe angel wrote, and vanished. The next night\nIt came again with a great wakening light,\nAnd showed the names whom love of God had blest,\nAnd lo! Ben Adhem's name led all the rest.\n"
+  },
+  {
+    "key": "advice-for-pallbearers",
+    "title": "Advice for Pallbearers",
+    "author": "Benjamin Gucciardi",
+    "poem": "To make the sound\nof your footsteps disappear\n\nrequires practice\na cornfield in late autumn\n\nwhen the ground is brittle enough\nto repeat what it hears.\n\nBest if the six of you can go together\nat dusk, find a barn-owl.\n\nA corn-crow will do.\nSee how close you can get before\n\nthe bird startles, observe\nthe interaction of air and wing.\n\nBefore you handle the casket\nborrow your mother's finest crystal\n\nvase, carry it through the crowded parking lot\nto the water park, ride the slides.\n\nLet nothing shatter.\nThe trick is for the coffin to appear\n\nto float, the weight of his failures\nsuperfluous; we all want to be known.\n\nas saints for a few moments\nbefore we are forgotten.\n"
   }
 ]
